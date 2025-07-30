@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CopilotDiffPersistence">
+    <option name="pendingDiffs">
+      <map>
+        <entry key="$PROJECT_DIR$/FIREBASE_DATABASE_RULES.md">
+          <value>
+            <PendingDiffInfo>
+              <option name="filePath" value="$PROJECT_DIR$/FIREBASE_DATABASE_RULES.md" />
+              <option name="updatedContent" value="# Firebase Realtime Database Rules untuk SIBUKA&#10;&#10;## Masalah: Data Tidak Tersimpan Saat Klik &quot;Simpan&quot;&#10;&#10;Jika data buku tidak tersimpan ke database, kemungkinan penyebabnya adalah Firebase Realtime Database Rules yang terlalu ketat.&#10;&#10;## Solusi: Update Firebase Realtime Database Rules&#10;&#10;1. **Buka Firebase Console:**&#10;   - Kunjungi https://console.firebase.google.com&#10;   - Pilih project SIBUKA Anda&#10;&#10;2. **Navigasi ke Realtime Database:**&#10;   - Klik &quot;Realtime Database&quot; di menu kiri (bukan &quot;Firestore Database&quot;)&#10;   - Klik tab &quot;Rules&quot;&#10;&#10;3. **Ganti Rules dengan kode berikut:**&#10;&#10;```javascript&#10;{&#10;  &quot;rules&quot;: {&#10;    &quot;.read&quot;: true,&#10;    &quot;.write&quot;: true&#10;  }&#10;}&#10;```&#10;&#10;**ATAU untuk keamanan yang lebih baik (jika menggunakan Firebase Auth):**&#10;&#10;```javascript&#10;{&#10;  &quot;rules&quot;: {&#10;    &quot;.read&quot;: &quot;auth != null&quot;,&#10;    &quot;.write&quot;: &quot;auth != null&quot;&#10;  }&#10;}&#10;```&#10;&#10;4. **Klik &quot;Publish&quot; untuk menerapkan rules**&#10;&#10;## Langkah Debugging&#10;&#10;Setelah mengupdate rules, coba langkah berikut:&#10;&#10;1. **Buka aplikasi SIBUKA**&#10;2. **Buka &quot;Tambah Buku&quot;**&#10;3. **Isi form dengan data test**&#10;4. **Klik &quot;Simpan&quot;**&#10;5. **Cek Logcat di Android Studio untuk melihat pesan debug**&#10;&#10;## Pesan Log yang Perlu Diperhatikan&#10;&#10;Dalam Logcat, cari tag &quot;AddBookDialog&quot; untuk melihat:&#10;- ✅ &quot;Firebase Database connection successful&quot; - Koneksi berhasil&#10;- ✅ &quot;Book saved successfully to Firebase&quot; - Data berhasil disimpan&#10;- ❌ &quot;Failed to save book&quot; - Ada error saat menyimpan&#10;&#10;## Jika Masih Gagal&#10;&#10;1. **Pastikan internet connection aktif**&#10;2. **Restart aplikasi**&#10;3. **Cek Firebase Console - Realtime Database untuk melihat apakah data muncul**&#10;4. **Cek Logcat untuk error message yang spesifik**&#10;&#10;## Rules Produksi (Setelah Testing Berhasil)&#10;&#10;Setelah data berhasil tersimpan, ganti dengan rules yang lebih aman:&#10;&#10;```javascript&#10;{&#10;  &quot;rules&quot;: {&#10;    &quot;books&quot;: {&#10;      &quot;.read&quot;: true,&#10;      &quot;.write&quot;: &quot;auth != null&quot;&#10;    },&#10;    &quot;borrowings&quot;: {&#10;      &quot;.read&quot;: &quot;auth != null&quot;,&#10;      &quot;.write&quot;: &quot;auth != null&quot;&#10;    }&#10;  }&#10;}&#10;```" />
+            </PendingDiffInfo>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/FIREBASE_STORAGE_SETUP.md">
+          <value>
+            <PendingDiffInfo>
+              <option name="filePath" value="$PROJECT_DIR$/FIREBASE_STORAGE_SETUP.md" />
+              <option name="updatedContent" value="# Firebase Storage Rules untuk SIBUKA&#10;&#10;## Masalah: Gagal Upload Gambar&#10;&#10;Jika Anda masih mengalami masalah upload gambar, kemungkinan besar adalah karena Firebase Storage Rules yang terlalu ketat.&#10;&#10;## Solusi: Update Firebase Storage Rules&#10;&#10;1. **Buka Firebase Console:**&#10;   - Kunjungi https://console.firebase.google.com&#10;   - Pilih project SIBUKA Anda&#10;&#10;2. **Navigasi ke Storage:**&#10;   - Klik &quot;Storage&quot; di menu kiri&#10;   - Klik tab &quot;Rules&quot;&#10;&#10;3. **Ganti Rules dengan kode berikut:**&#10;&#10;```javascript&#10;rules_version = '2';&#10;service firebase.storage {&#10;  match /b/{bucket}/o {&#10;    // Izinkan akses untuk semua file book covers&#10;    match /book_covers/{allPaths=**} {&#10;      allow read, write: if true; // Sementara untuk testing&#10;    }&#10;    &#10;    // Atau jika Anda ingin lebih aman (hanya user yang login):&#10;    // match /book_covers/{allPaths=**} {&#10;    //   allow read, write: if request.auth != null;&#10;    // }&#10;  }&#10;}&#10;```&#10;&#10;4. **Klik &quot;Publish&quot; untuk menerapkan rules**&#10;&#10;## Jika Masih Gagal&#10;&#10;Jika setelah mengubah rules masih gagal, coba langkah berikut:&#10;&#10;1. **Pastikan Firebase Storage sudah diaktifkan di project Anda**&#10;2. **Cek log di Android Studio** - akan ada pesan error yang lebih detail&#10;3. **Coba tambah buku tanpa gambar dulu** - untuk memastikan masalah hanya di upload gambar&#10;&#10;## Rules Produksi (Setelah Testing Berhasil)&#10;&#10;Setelah upload berhasil, ganti dengan rules yang lebih aman:&#10;&#10;```javascript&#10;rules_version = '2';&#10;service firebase.storage {&#10;  match /b/{bucket}/o {&#10;    match /book_covers/{fileName} {&#10;      allow read: if true; // Semua orang bisa baca&#10;      allow write: if request.auth != null; // Hanya user login yang bisa upload&#10;    }&#10;  }&#10;}&#10;```" />
+            </PendingDiffInfo>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/res/drawable/button_primary.xml">
+          <value>
+            <PendingDiffInfo>
+              <option name="filePath" value="$PROJECT_DIR$/app/src/main/res/drawable/button_primary.xml" />
+              <option name="updatedContent" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;&#10;&lt;shape xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;&gt;&#10;    &lt;solid android:color=&quot;@color/colorPrimary&quot; /&gt;&#10;    &lt;corners android:radius=&quot;25dp&quot; /&gt;&#10;&lt;/shape&gt;" />
+            </PendingDiffInfo>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/res/drawable/card_modern.xml">
+          <value>
+            <PendingDiffInfo>
+              <option name="filePath" value="$PROJECT_DIR$/app/src/main/res/drawable/card_modern.xml" />
+              <option name="updatedContent" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;&#10;&lt;shape xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;&gt;&#10;    &lt;solid android:color=&quot;@color/cardBackground&quot; /&gt;&#10;    &lt;corners android:radius=&quot;16dp&quot; /&gt;&#10;    &lt;stroke&#10;        android:width=&quot;1dp&quot;&#10;        android:color=&quot;@color/cardBorder&quot; /&gt;&#10;&lt;/shape&gt;" />
+            </PendingDiffInfo>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/res/drawable/gradient_secondary.xml">
+          <value>
+            <PendingDiffInfo>
+              <option name="filePath" value="$PROJECT_DIR$/app/src/main/res/drawable/gradient_secondary.xml" />
+              <option name="updatedContent" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;&#10;&lt;shape xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;&gt;&#10;    &lt;gradient&#10;        android:startColor=&quot;@color/colorSecondary&quot;&#10;        android:endColor=&quot;@color/colorSecondaryVariant&quot;&#10;        android:angle=&quot;45&quot;&#10;        android:type=&quot;linear&quot; /&gt;&#10;    &lt;corners android:radius=&quot;8dp&quot; /&gt;&#10;&lt;/shape&gt;" />
+            </PendingDiffInfo>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>
